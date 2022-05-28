@@ -1,0 +1,31 @@
+{
+  "posts": [
+    {
+      "id": "c3ce438c-9f9d-41a7-bdf0-fd5c8472a240",
+      "title": "Hello World",
+      "content": "My Name is Kevin"
+    },
+    {
+      "id": "13199edb-c3ad-41c4-9ac7-85ceee58a00b",
+      "title": "Hello World",
+      "content": "My Name is Kevin"
+    },
+    {
+      "id": "14dced88-e5cd-4095-8bf6-8657d27083f2",
+      "title": "Hello World",
+      "content": "My Name is Kevin"
+    },
+    {
+      "id": "561e93b8-7279-4fcf-b35a-bd6c3361d4f8",
+      "title": "Test",
+      "content": "Abc",
+      "userId": "FeikG7Kui7zw8srzShhrPv2TJgwAn61GU7m8xmaK9GnW"
+    },
+    {
+      "id": "1643934a-2961-4546-a30c-bf5dfb449243",
+      "title": "Test",
+      "content": "AbcDEF",
+      "userId": "FeikG7Kui7zw8srzShhrPv2TJgwAn61GU7m8xmaK9GnW"
+    }
+  ]
+}
