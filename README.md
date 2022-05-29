@@ -1,10 +1,41 @@
-# Solana wallet auth backend example
+# Solana Wallet Auth: A FullStack example
 
 This example uses Solana's wallet adapter to sign messages and verifies
 their signatures on the backend, allowing for a lean way to authenticate
 users without the need for web2 credentials like email/password combinations
 or social providers, in this scenario all you have to do is connect your wallet
 and sign interaction messages to be properly authenticated.
+
+## How to run
+
+Backend
+
+```bash
+cd wallet-backend
+yarn && yarn dev
+```
+
+Frontend
+
+```bash
+cd wallet-frontend
+yarn && yarn dev
+```
+
+## Technology stack for this example
+
+Most of the technologies used in this example are production ready,
+however, be sure to check them and remember to switch LowDB for a
+proper database.
+
+### Backend
+
+- NodeJS, Express, Typescript, LowDB (Local JSON file, only for testing), TweetNaCL.
+- GraphQL example coming soon.
+
+### Frontend
+
+- React, Typescript, Vite, Solana-Wallet-Adapter, Tailwind.
 
 ## Notes
 
@@ -27,6 +58,7 @@ of UX patterns, like reusing a token for `"skip"` requests (Requests that skip a
 
 ## Reference read
 
+- [Solana Wallet Adapter - How can I sign and verify messages?](https://github.com/solana-labs/wallet-adapter/blob/master/FAQ.md#how-can-i-sign-and-verify-messages)
 - [Phantom Wallet - Signing a Message](https://docs.phantom.app/integrating/extension-and-mobile-browser/signing-a-message)
 - [TweetNaCL - Verfiy message signature](https://github.com/dchest/tweetnacl-js/blob/master/README.md#naclsigndetachedverifymessage-signature-publickey)
 - [Improve user authentication with Web3 wallets](https://blog.logrocket.com/improve-user-authentication-web3-wallets/)
