@@ -1,16 +1,10 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useQuery, useMutation } from "react-query";
+import { Post } from "../lib/types/Post";
 import * as web3Posts from "../lib/api/web3Posts";
 import { Layout } from "../components/Layout";
 import { PostCard, PostCardSkeleton } from "../components/PostCard";
-
-type Post = {
-  title: string;
-  content: string;
-  id: string;
-  userId: string;
-};
 
 export const Home = () => {
   const { publicKey } = useWallet();

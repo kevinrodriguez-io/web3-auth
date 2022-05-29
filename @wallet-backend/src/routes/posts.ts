@@ -85,18 +85,23 @@ postsRouter.put(
       const pk = authorizedPk(res);
       const { postId } = req.params;
       const body = await postSchema.validate(req.body);
+
       const post = await rw((db) => {
         const match = db.data!.posts.find(({ id }) => id === postId);
+        
         if (!match) {
           throw new Error('Post not found');
         }
+
         if (match.userId !== pk) {
           throw new Error('Forbidden');
         }
+
         match.title = body.title;
         match.content = body.content;
         return match;
       });
+
       return res.status(200).send({ data: { post } });
     } catch (error) {
       if (yup.ValidationError.isError(error)) {

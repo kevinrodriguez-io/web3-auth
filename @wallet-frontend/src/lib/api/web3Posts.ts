@@ -29,6 +29,15 @@ export class MemoryStoredToken {
   }
 }
 
+/**
+ * Creates an authentication token to be passed to the server
+ * via auth headers, returns the following format:
+ * `pubKey.message.signature` (All in base58).
+ * @param action Name of the action to be allowed, needed for authentication purposes.
+ * @param wallet Signer.
+ * @param exp Expiration time in minutes.
+ * @returns {Promise<string>} pubKey.message.signature (All in base58)
+ */
 export const createAuthToken = async (
   action: string,
   wallet: MessageSigner,
@@ -50,13 +59,6 @@ export const createAuthToken = async (
 /**
  * Performs a request to the endpoint using
  * authentication via wallet signer.
- * @param method Http Method
- * @param url Http Url
- * @param action Api-Defined Action for Authorization, use `skip` to avoid re-signing and reuse an existing, still valid token. Not all endpoints allow for this usage.
- * @param wallet Wallet
- * @param payload Contents
- * @param exp Expiration in minutes
- * @returns
  */
 export const req = async <T, R>(
   contents: { method: Method; url: string; data?: T },
@@ -96,5 +98,6 @@ export const req = async <T, R>(
     url,
     headers: { Authorization: `Bearer ${authToken}` },
   });
+
   return response.data;
 };
