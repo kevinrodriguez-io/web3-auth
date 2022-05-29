@@ -1,4 +1,4 @@
-# Wallet auth example
+# Solana wallet auth backend example
 
 This example uses Solana's wallet adapter to sign messages and verifies
 their signatures on the backend, allowing for a lean way to authenticate
