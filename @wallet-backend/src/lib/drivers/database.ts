@@ -20,7 +20,7 @@ class LowWithLodash<T> extends Low<T> {
   chain: _.ExpChain<this['data']> = _.chain(this).get('data');
 }
 
-const adapter = new JSONFile<Data>('db.json');
+const adapter = new JSONFile<Data>(process.env.DB_FILE!);
 export const db = new LowWithLodash(adapter);
 
 export const rw = async <T>(

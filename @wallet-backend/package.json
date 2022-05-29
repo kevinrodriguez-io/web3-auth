@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "build": "tsc",
     "start": "node ./build/index.js",
     "dev": "concurrently \"tsc -w\" \"nodemon ./build/index.js\""
   },

@@ -3,7 +3,7 @@ import { JSONFile, Low } from 'lowdb';
 class LowWithLodash extends Low {
     chain = _.chain(this).get('data');
 }
-const adapter = new JSONFile('db.json');
+const adapter = new JSONFile(process.env.DB_FILE);
 export const db = new LowWithLodash(adapter);
 export const rw = async (code) => {
     await db.read();

@@ -12,7 +12,24 @@ type MessageSigner = {
   publicKey: web3.PublicKey;
 };
 
-export const getAuthToken = async (
+/**
+ * Singleton class for storing a valid signature on-memory.
+ */
+export class MemoryStoredToken {
+  private constructor(public token: string | null = null) {}
+  private static instance: MemoryStoredToken;
+  static getInstance(): MemoryStoredToken {
+    if (!MemoryStoredToken.instance) {
+      MemoryStoredToken.instance = new MemoryStoredToken();
+    }
+    return MemoryStoredToken.instance;
+  }
+  public setToken(token: string) {
+    this.token = token;
+  }
+}
+
+export const createAuthToken = async (
   action: string,
   wallet: MessageSigner,
   exp = 5
@@ -30,24 +47,54 @@ export const getAuthToken = async (
   return `${pk}.${msg}.${sig}`;
 };
 
-export const performAuthenticatedRequest = async <T, R>(
-  method: Method,
-  url: string,
+/**
+ * Performs a request to the endpoint using
+ * authentication via wallet signer.
+ * @param method Http Method
+ * @param url Http Url
+ * @param action Api-Defined Action for Authorization, use `skip` to avoid re-signing and reuse an existing, still valid token. Not all endpoints allow for this usage.
+ * @param wallet Wallet
+ * @param payload Contents
+ * @param exp Expiration in minutes
+ * @returns
+ */
+export const req = async <T, R>(
+  contents: { method: Method; url: string; data?: T },
   action: string,
   wallet: MessageSigner,
-  payload?: T,
   exp = 5
 ) => {
-  // You can set up the backend to trust a single token for a given
-  // expiration time, JWT style, so the user doesn't have to approve all.
-  const authToken = await getAuthToken(action, wallet, exp);
+  const { method, url, data } = contents;
+
+  let authToken;
+  if (action === "skip") {
+    // Try to reuse existing token.
+    const memoryToken = MemoryStoredToken.getInstance().token;
+    if (memoryToken) {
+      const [, msg] = memoryToken.split(".");
+      const contents = JSON.parse(
+        new TextDecoder().decode(b58.decode(msg))
+      ) as { exp: number };
+      if (DateTime.local().toUTC().toUnixInteger() > contents.exp) {
+        // Token has expired.
+        authToken = await createAuthToken(action, wallet, exp);
+        MemoryStoredToken.getInstance().setToken(authToken);
+      } else {
+        authToken = memoryToken;
+      }
+    } else {
+      authToken = await createAuthToken(action, wallet, exp);
+      MemoryStoredToken.getInstance().setToken(authToken);
+    }
+  } else {
+    authToken = await createAuthToken(action, wallet, exp);
+  }
+
   const response = await web3Posts.request<R>({
-    data: payload,
+    data,
     method,
     url,
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
+    headers: { Authorization: `Bearer ${authToken}` },
   });
   return response.data;
 };

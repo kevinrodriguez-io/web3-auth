@@ -5,12 +5,12 @@ import { rw, r } from '../lib/drivers/database.js';
 import { postSchema } from '../models/post.js';
 import { authorizedPk, web3Auth } from '../middleware/web3Auth.js';
 const postsRouter = express.Router();
-postsRouter.get('/', web3Auth('posts:get-all'), async (_req, res) => {
+postsRouter.get('/', web3Auth({ action: 'posts:get-all', allowSkipCheck: true }), async (_req, res) => {
     const pk = authorizedPk(res);
     const posts = await r((db) => db.data.posts.filter(({ userId }) => userId === pk));
     return res.status(200).send({ data: { posts } });
 });
-postsRouter.get('/:postId', web3Auth('posts:get-one'), async (req, res) => {
+postsRouter.get('/:postId', web3Auth({ action: 'posts:get-one', allowSkipCheck: true }), async (req, res) => {
     const pk = authorizedPk(res);
     const { postId } = req.params;
     const post = await r((db) => db.data.posts.find((post) => post.id === postId) ?? null);
@@ -34,7 +34,7 @@ postsRouter.get('/:postId', web3Auth('posts:get-one'), async (req, res) => {
         },
     });
 });
-postsRouter.post('/', web3Auth('posts:post'), async (req, res) => {
+postsRouter.post('/', web3Auth({ action: 'posts:post' }), async (req, res) => {
     try {
         const pk = authorizedPk(res);
         const body = await postSchema.validate(req.body);
@@ -56,7 +56,7 @@ postsRouter.post('/', web3Auth('posts:post'), async (req, res) => {
         }
     }
 });
-postsRouter.put('/:postId', web3Auth('posts:put'), async (req, res) => {
+postsRouter.put('/:postId', web3Auth({ action: 'posts:put' }), async (req, res) => {
     try {
         const pk = authorizedPk(res);
         const { postId } = req.params;
@@ -84,7 +84,7 @@ postsRouter.put('/:postId', web3Auth('posts:put'), async (req, res) => {
         }
     }
 });
-postsRouter.delete('/:postId', web3Auth('posts:delete'), async (req, res) => {
+postsRouter.delete('/:postId', web3Auth({ action: 'posts:delete' }), async (req, res) => {
     try {
         const pk = authorizedPk(res);
         const { postId } = req.params;
