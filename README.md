@@ -52,7 +52,7 @@ extracts the authorization headers and validates, then parses the message to per
 some additional checks and the `web3Posts.ts` axios client exemplifies a good set
 of UX patterns, like reusing a token for `"skip"` requests (Requests that skip action checks).
 
-## Here's a diagram of simplified is this authentication method
+## Here's a diagram of how simplified is this authentication method
 
 ![arch](https://user-images.githubusercontent.com/6248571/170860443-52f07799-d3e4-4f5f-a78e-2b09b8dc4d58.png)
 
